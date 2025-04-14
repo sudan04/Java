@@ -2,12 +2,12 @@
 import java.util.Arrays;
 
 
-class CustomArrList{
+class CustomArrListWithoutGenerics{
     private int[] data;
     private static int default_size= 10;
     private int size=0;
 
-    public CustomArrList(){
+    public CustomArrListWithoutGenerics(){
         data= new int[5];
     }
 
@@ -51,14 +51,61 @@ class CustomArrList{
     public String toString() {
         return "{Data: "+ Arrays.toString(Arrays.copyOf(data, size))+ ",Size: "+size+"}";
     }
-
-    
-    
 }
 
+class CustomArrListGenerics<T>{
+    private Object[] data;
+    private static int default_size= 10;
+    private int size=0;
+
+    public CustomArrListGenerics(){
+        data= new Object[5];
+    }
+
+    public void add(T value){
+        if(isFull()){
+            resize();
+        }
+        data[size++]= value;
+    }
+
+    private void resize() {
+        Object[] temp= new Object[data.length*2];
+
+        System.arraycopy(data, 0, temp, 0, data.length);
+        data= temp;
+        
+    }
+
+    public boolean isFull(){
+        return data.length== size;
+    }
+
+    public T remove(int index){
+        T removed= (T) data[--size];
+        return removed;
+    }
+
+    public T get(int index){
+        return (T) data[index];
+    }
+
+    public int size(){
+        return this.size;
+    }
+
+    public void set(int index, T value){
+        data[index]= value;
+    }
+
+    @Override
+    public String toString() {
+        return "{Data: "+ Arrays.toString(Arrays.copyOf(data, size))+ ",Size: "+size+"}";
+    }
+}
 public class CustomArrListExample {
     public static void main(String[] args) {
-        CustomArrList arrList= new CustomArrList();
+        CustomArrListGenerics<Integer> arrList= new CustomArrListGenerics<>();
         arrList.add(3);
         arrList.add(34);
         arrList.add(334);
